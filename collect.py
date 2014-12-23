@@ -6,11 +6,15 @@
 import os, sys, collections, time
 import pygeoip
 import httpagentparser
+import pymysql
+import string, random
 #import re
 from time import gmtime, strftime
 from datetime import datetime
 
-log = open('olafelzinga.com-access_log','r')
+log = open('/Applications/MAMP/logs/apache_access.log','r')
+connection = pymysql.connect(host='localhost', port=8889, user='root', passwd='root', db='accesslog')
+cursor = connection.cursor()
 
 class logHandler(object):
 	pVisit={} # page visits
@@ -20,22 +24,60 @@ class logHandler(object):
 
 	# processAccesLog
 	def processAccesLog(self):
-		
+
 		for line in log:
 			# 0:host || 1:l || 2:user || 3:time || 4:request || 5:status || 6:bytes || 7:referer || 8:user-agent|| 
 			array = (line.split('||'))
-			#self.getCountry(array[0])
 			
-			# os || platform || browser
-			useragent = httpagentparser.detect(array[8])
-			#print(useragent)
-			#if not useragent['bot']:
-			#print(useragent['bot'])
+			#Host
+			host = array[0]
+
+			#Datetime
+
+			#Request
+			request = array[4]
+
+			#Statuscode
+			statuscode = array[5]
+
+			#Httpagent stuff
+			httpagentDict = httpagentparser.detect(array[8])
+
+			#OS
+			try:
+				os = httpagentDict['flavor']['name']
+			except:
+				os = ''
+			
+
+			#Platformname
+			try:
+				platformname = httpagentDict['platform']['name']
+			except:
+				platformname = ''
+
+			#Platformversion
+
+			try:
+				platformversion = httpagentDict['platform']['version']
+			except:
+				platformversion = ''
+
+			#Browsername
+			try:
+				browsername = httpagentDict['browser']['name']
+			except:
+				browsername = ''
+
+			#Browserversion
+			try:
+				browserversion = httpagentDict['browser']['version']
+			except:
+				browserversion = ''
 
 			##$$-----BOT-----$$##
-			if 'bot' in useragent.keys():
-				bot  = useragent['bot']
-				#print(bot)
+			if 'bot' in httpagentDict.keys():
+				bot  = httpagentDict['bot']
 			else:
 				bot = False
 
@@ -56,15 +98,15 @@ class logHandler(object):
 				query += time.strftime('%Y-%m-%d 00:00:00%z', x)+separation
 				query += str(bot)+separation
 				try:
-					query+= str(useragent['os']['name'])+separation
+					query+= str(httpagentDict['os']['name'])+separation
 				except:
 					query+="no OS"+separation
 				
-				query+= str(useragent['platform']['name'])+separation
-				query+= str(useragent['platform']['version'])+separation
+				query+= str(httpagentDict['platform']['name'])+separation
+				query+= str(httpagentDict['platform']['version'])+separation
 				try:
-					query+= str(useragent['browser']['name'])+separation
-					query+= str(useragent['browser']['version'])+separation
+					query+= str(httpagentDict['browser']['name'])+separation
+					query+= str(httpagentDict['browser']['version'])+separation
 				except:
 					query+="No Browser"+separation+"1.0"+separation
 				country = str(self.getCountry(array[0]))
@@ -78,18 +120,50 @@ class logHandler(object):
 			line = array[4],''.ljust(spaceLength),":", array[7],''.ljust(spaceLength2),':',array[3]
 
 		
-		#print(strftime("[%d/%b/%Y:%H:%M:%S %z]", gmtime()))
-		self.printList(self.countryDict)
-		#self.printList(self.uniqueVisi)
+			#print(strftime("[%d/%b/%Y:%H:%M:%S %z]", gmtime()))
+			#self.printList(self.countryDict)
+			#self.printList(self.uniqueVisi)
 
-	def send():
-		for key, value in self.uniqueVisi:
+			#Construct the SQL query
+			sql = ("INSERT INTO request (host, datetime, request, statuscode, bot, os, platformname, platformversion, browsername, browserversion, countryname, countrycode, isPageview) VALUES "
+				"('{host}', "
+				"NOW(), "
+				"'{request}', "
+				"'{statuscode}', "
+				"{bot}, "
+				"'{os}', "
+				"'{platformname}', "
+				"'{platformversion}', "
+				"'{browsername}', "
+				"'{browserversion}', "
+				"'{countryname}', "
+				"'{countrycode}', "
+				"'{isPageview}');"
+			)
 
+			formattedSql = sql.format(host=''.join(random.choice(string.ascii_uppercase) for i in range(12)),
+				request=request, 
+				statuscode=statuscode, 
+				bot=bot, 
+				os=os, 
+				platformname=platformname, 
+				platformversion=platformversion, 
+				browsername=browsername, 
+				browserversion=browserversion, 
+				countryname='countryname', 
+				countrycode='US',
+				isPageview='1')
+
+			print(formattedSql)
+			cursor.execute(formattedSql)
+		
+		connection.commit()
+		connection.close()
 
 	# getCountry will convert ip to coutryname
 	# @param ip 
 	def getCountry(self, ip):
-		gi = pygeoip.GeoIP('GeoIP 2.dat')
+		gi = pygeoip.GeoIP('GeoIPv6.dat')
 		return gi.country_name_by_addr(ip)+","+gi.country_code_by_addr(ip)
 
 
@@ -110,13 +184,6 @@ class logHandler(object):
 
 			print(key,''.ljust(spaceLength),":", value)    
 			#filex.write(str(line)+"\n")
-
-class sendDict(object):
-	
-	def __init__(self):
-		
-		
-
 
 if __name__ == "__main__":
 	pal = logHandler()
