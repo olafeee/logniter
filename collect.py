@@ -27,16 +27,18 @@ class logHandler(object):
 	def processAccesLog(self):
 
 		for line in log:
-			# 0:host || 1:l || 2:user || 3:time || 4:request || 5:status || 6:bytes || 7:referer || 8:user-agent|| 
+			# 0:host || 1:l || 2:user || 3:time || 4:request || 5:status || 6:bytes || 7:referer || 8:user-agent|| 9:contenttype
 			array = (line.split('||'))
 			
 			#Host
 			host = array[0]
 
 			#Datetime
+			parsedTime = time.strptime(array[3], "[%d/%b/%Y:%H:%M:%S %z]")
+			datetime = time.strftime('%Y-%m-%d %H:%M:%S', parsedTime)
 
 			#Request
-			request = array[4]
+			request = array[4][1:-1]
 
 			#Statuscode
 			statuscode = array[5]
@@ -85,20 +87,14 @@ class logHandler(object):
 				countryName = ''
 				countryCode = ''
 
+			#contenttype
+			contenttype = array[9][1:-2]
 
 			##$$-----BOT-----$$##
 			if 'bot' in httpagentDict.keys():
 				bot  = httpagentDict['bot']
 			else:
-				bot = False
-
-			##$$-----Time-----$$##
-			x = time.strptime(array[3], "[%d/%b/%Y:%H:%M:%S %z]")
-			
-			##$$-----Page-----$$##
-			hph = time.strftime('%Y-%m-%d %H:00:00 %z', x)
-			hph+= ","+str(bot)
-			self.fillDict(self.hPage, hph)  #hits per hour
+				bot = False			
 
 			##$$-----Unique-----$$##
 			# if not bot:
@@ -136,9 +132,9 @@ class logHandler(object):
 			#self.printList(self.uniqueVisi)
 
 			#Construct the SQL query
-			sql = ("INSERT INTO request (host, datetime, request, statuscode, bot, os, platformname, platformversion, browsername, browserversion, countryname, countrycode, isPageview) VALUES "
+			sql = ("INSERT INTO request (host, datetime, request, statuscode, bot, os, platformname, platformversion, browsername, browserversion, countryname, countrycode, contenttype, isPageview) VALUES "
 				"('{host}', "
-				"NOW(), "
+				"'{datetime}', "
 				"'{request}', "
 				"'{statuscode}', "
 				"{bot}, "
@@ -149,10 +145,12 @@ class logHandler(object):
 				"'{browserversion}', "
 				"'{countryname}', "
 				"'{countrycode}', "
+				"'{contenttype}', "
 				"'{isPageview}');"
 			)
 
 			formattedSql = sql.format(host=host,
+				datetime=datetime,
 				request=request, 
 				statuscode=statuscode, 
 				bot=bot, 
@@ -163,6 +161,7 @@ class logHandler(object):
 				browserversion=browserversion, 
 				countryname=countryName, 
 				countrycode=countryCode,
+				contenttype=contenttype,
 				isPageview='1')
 
 			#print(formattedSql)

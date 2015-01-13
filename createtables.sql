@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS `accesslog`.`request` (
   `browserversion` TINYTEXT NULL,
   `countryname` TINYTEXT NULL,
   `countrycode` VARCHAR(2) NULL,
+  `contenttype` TINYTEXT NULL,
   `isPageview` TINYINT(1) NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
