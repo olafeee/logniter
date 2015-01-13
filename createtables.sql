@@ -18,8 +18,9 @@ USE `accesslog` ;
 -- Table `accesslog`.`request`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `accesslog`.`request` (
-  `host` VARCHAR(20) NOT NULL,
-  `datetime` DATETIME NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `host` VARCHAR(20) NULL,
+  `datetime` DATETIME NULL,
   `request` LONGTEXT NULL,
   `statuscode` VARCHAR(3) NULL,
   `bot` TINYINT(1) NULL,
@@ -31,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `accesslog`.`request` (
   `countryname` TINYTEXT NULL,
   `countrycode` VARCHAR(2) NULL,
   `isPageview` TINYINT(1) NULL,
-  PRIMARY KEY (`host`, `datetime`))
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
 

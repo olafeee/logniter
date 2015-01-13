@@ -8,6 +8,7 @@ import pygeoip
 import httpagentparser
 import pymysql
 import string, random
+import ipaddress
 #import re
 from time import gmtime, strftime
 from datetime import datetime
@@ -75,6 +76,16 @@ class logHandler(object):
 			except:
 				browserversion = ''
 
+			#country
+			try:
+				country = self.getCountry(host)
+				countryName = country[0]
+				countryCode = country[1]
+			except ValueError:	
+				countryName = ''
+				countryCode = ''
+
+
 			##$$-----BOT-----$$##
 			if 'bot' in httpagentDict.keys():
 				bot  = httpagentDict['bot']
@@ -90,30 +101,30 @@ class logHandler(object):
 			self.fillDict(self.hPage, hph)  #hits per hour
 
 			##$$-----Unique-----$$##
-			if not bot:
-				separation = ','
-				# 0:ip , 1:datetime , 2:bot , 3:os , 4:platform_name , 5:platform_version,
-				# 6:browser_nane , 7:browser_version , 8:country || 9: hits_day (but is not in query string) 
-				query = array[0]+separation #ip
-				query += time.strftime('%Y-%m-%d 00:00:00%z', x)+separation
-				query += str(bot)+separation
-				try:
-					query+= str(httpagentDict['os']['name'])+separation
-				except:
-					query+="no OS"+separation
+			# if not bot:
+			# 	separation = ','
+			# 	# 0:ip , 1:datetime , 2:bot , 3:os , 4:platform_name , 5:platform_version,
+			# 	# 6:browser_nane , 7:browser_version , 8:country || 9: hits_day (but is not in query string) 
+			# 	query = array[0]+separation #ip
+			# 	query += time.strftime('%Y-%m-%d 00:00:00%z', x)+separation
+			# 	query += str(bot)+separation
+			# 	try:
+			# 		query+= str(httpagentDict['os']['name'])+separation
+			# 	except:
+			# 		query+="no OS"+separation
 				
-				query+= str(httpagentDict['platform']['name'])+separation
-				query+= str(httpagentDict['platform']['version'])+separation
-				try:
-					query+= str(httpagentDict['browser']['name'])+separation
-					query+= str(httpagentDict['browser']['version'])+separation
-				except:
-					query+="No Browser"+separation+"1.0"+separation
-				country = str(self.getCountry(array[0]))
-				query+= country
+			# 	query+= str(httpagentDict['platform']['name'])+separation
+			# 	query+= str(httpagentDict['platform']['version'])+separation
+			# 	try:
+			# 		query+= str(httpagentDict['browser']['name'])+separation
+			# 		query+= str(httpagentDict['browser']['version'])+separation
+			# 	except:
+			# 		query+="No Browser"+separation+"1.0"+separation
+			# 	country = str(self.getCountry(array[0]))
+			# 	query+= country
 
-				self.fillDict(self.countryDict, country)
-				self.fillDict(self.uniqueVisi, query)
+			# 	self.fillDict(self.countryDict, country)
+			# 	self.fillDict(self.uniqueVisi, query)
 			
 			spaceLength = 80-len(array[4])
 			spaceLength2 = 60-len(array[7])
@@ -141,7 +152,7 @@ class logHandler(object):
 				"'{isPageview}');"
 			)
 
-			formattedSql = sql.format(host=''.join(random.choice(string.ascii_uppercase) for i in range(12)),
+			formattedSql = sql.format(host=host,
 				request=request, 
 				statuscode=statuscode, 
 				bot=bot, 
@@ -150,11 +161,11 @@ class logHandler(object):
 				platformversion=platformversion, 
 				browsername=browsername, 
 				browserversion=browserversion, 
-				countryname='countryname', 
-				countrycode='US',
+				countryname=countryName, 
+				countrycode=countryCode,
 				isPageview='1')
 
-			print(formattedSql)
+			#print(formattedSql)
 			cursor.execute(formattedSql)
 		
 		connection.commit()
@@ -163,8 +174,15 @@ class logHandler(object):
 	# getCountry will convert ip to coutryname
 	# @param ip 
 	def getCountry(self, ip):
-		gi = pygeoip.GeoIP('GeoIPv6.dat')
-		return gi.country_name_by_addr(ip)+","+gi.country_code_by_addr(ip)
+		ipaddressObj = ipaddress.ip_address(ip)
+		try:
+			if isinstance(ipaddressObj, ipaddress.IPv4Address):
+				gi = pygeoip.GeoIP('GeoIP.dat')
+			elif isinstance(ipaddressObj, ipaddress.IPv6Address):
+				gi = pygeoip.GeoIP('GeoIPv6.dat')
+			return gi.country_name_by_addr(ip), gi.country_code_by_addr(ip)
+		except ValueError:
+			raise ValueError('Not a valid IP')
 
 
 	# fillDict
