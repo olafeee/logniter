@@ -1,21 +1,24 @@
 #!/usr/bin/env python3
 # apache accesslog converter
 # version 0.1
-# devoleped in python v3.4                 
-# made by Olaf Elzinga & Bas Alphenaar  
+# developed in python v3.4          
+# made by Olaf Elzinga & Bas Alphenaar
 import os, sys, collections, time
 import pygeoip
 import httpagentparser
 import pymysql
 import string, random
 import ipaddress
-#import re
+
 from time import gmtime, strftime
 from datetime import datetime
 
 log = open('/Applications/MAMP/logs/apache_access.log','r')
 connection = pymysql.connect(host='localhost', port=8889, user='root', passwd='root', db='accesslog')
 cursor = connection.cursor()
+
+requestblacklist = [".png", ".jpeg", ".jpg", ".js", ".xml"]
+contenttypewhitelist = ["text/html"]
 
 class logHandler(object):
 	pVisit={} # page visits
@@ -90,46 +93,16 @@ class logHandler(object):
 			#contenttype
 			contenttype = array[9][1:-2]
 
-			##$$-----BOT-----$$##
+			#bot
 			if 'bot' in httpagentDict.keys():
 				bot  = httpagentDict['bot']
 			else:
-				bot = False			
+				bot = False	
 
-			##$$-----Unique-----$$##
-			# if not bot:
-			# 	separation = ','
-			# 	# 0:ip , 1:datetime , 2:bot , 3:os , 4:platform_name , 5:platform_version,
-			# 	# 6:browser_nane , 7:browser_version , 8:country || 9: hits_day (but is not in query string) 
-			# 	query = array[0]+separation #ip
-			# 	query += time.strftime('%Y-%m-%d 00:00:00%z', x)+separation
-			# 	query += str(bot)+separation
-			# 	try:
-			# 		query+= str(httpagentDict['os']['name'])+separation
-			# 	except:
-			# 		query+="no OS"+separation
-				
-			# 	query+= str(httpagentDict['platform']['name'])+separation
-			# 	query+= str(httpagentDict['platform']['version'])+separation
-			# 	try:
-			# 		query+= str(httpagentDict['browser']['name'])+separation
-			# 		query+= str(httpagentDict['browser']['version'])+separation
-			# 	except:
-			# 		query+="No Browser"+separation+"1.0"+separation
-			# 	country = str(self.getCountry(array[0]))
-			# 	query+= country
-
-			# 	self.fillDict(self.countryDict, country)
-			# 	self.fillDict(self.uniqueVisi, query)
-			
-			spaceLength = 80-len(array[4])
-			spaceLength2 = 60-len(array[7])
-			line = array[4],''.ljust(spaceLength),":", array[7],''.ljust(spaceLength2),':',array[3]
-
-		
-			#print(strftime("[%d/%b/%Y:%H:%M:%S %z]", gmtime()))
-			#self.printList(self.countryDict)
-			#self.printList(self.uniqueVisi)
+			if self.isPageview(bot, statuscode, contenttype, request):
+				pageview = '1'
+			else:
+				pageview = '0'
 
 			#Construct the SQL query
 			sql = ("INSERT INTO request (host, datetime, request, statuscode, bot, os, platformname, platformversion, browsername, browserversion, countryname, countrycode, contenttype, isPageview) VALUES "
@@ -162,13 +135,25 @@ class logHandler(object):
 				countryname=countryName, 
 				countrycode=countryCode,
 				contenttype=contenttype,
-				isPageview='1')
+				isPageview=pageview)
 
-			#print(formattedSql)
 			cursor.execute(formattedSql)
 		
 		connection.commit()
 		connection.close()
+
+	def isPageview(self, bot, statuscode, contenttype, request):
+		if not bot and statuscode == "200":
+			# Continue the evaluation if content-type is pageview suspect
+			if any(contenttype in s for s in contenttypewhitelist):
+				strippedRequest = request[4:-9]
+				# Mark as non-pageview when the request matches the blacklist
+				if any(s in strippedRequest for s in requestblacklist):
+					return False
+				else:
+					return True
+			else:
+				return False
 
 	# getCountry will convert ip to coutryname
 	# @param ip 
@@ -183,24 +168,6 @@ class logHandler(object):
 		except ValueError:
 			raise ValueError('Not a valid IP')
 
-
-	# fillDict
-	# @param x name of the dictiornary
-	# @param y name of the key
-	def fillDict(self, x, y):
-		if y not in x:
-			x[y] = 1
-		else:
-			x[y] += 1
-
-	# printList is a test function and will not be included in final version
-	def printList(self, item):
-		for key, value in item.items():
-			spaceLength = 40-len(key)
-			line = key,''.ljust(spaceLength),":", value
-
-			print(key,''.ljust(spaceLength),":", value)    
-			#filex.write(str(line)+"\n")
 
 if __name__ == "__main__":
 	pal = logHandler()
