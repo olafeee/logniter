@@ -10,15 +10,42 @@ import pymysql
 import string, random
 import ipaddress
 
+from sqlalchemy import create_engine, Column, String, Integer, DateTime, Boolean
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm.session import sessionmaker
+from sqlalchemy.dialects.mysql import LONGTEXT, TINYTEXT
+
 from time import gmtime, strftime
 from datetime import datetime
 
 log = open('/Applications/MAMP/logs/apache_access.log','r')
-connection = pymysql.connect(host='localhost', port=8889, user='root', passwd='root', db='accesslog')
-cursor = connection.cursor()
+
+engine = create_engine('mysql+pymysql://root:root@localhost:8889/accesslog-orm', echo=True)
+Base = declarative_base()
 
 requestblacklist = [".png", ".jpeg", ".jpg", ".js", ".xml"]
 contenttypewhitelist = ["text/html"]
+
+class Request(Base):
+	__tablename__ = 'requests'
+
+	id = Column(Integer, primary_key=True)
+	host = Column(String(20))
+	datetime = Column(DateTime)
+	request = Column(LONGTEXT)
+	statuscode = Column(String(3))
+	bot = Column(Boolean)
+	os = Column(TINYTEXT)
+	platformname = Column(TINYTEXT)
+	platformversion = Column(TINYTEXT)
+	browsername = Column(TINYTEXT)
+	browserversion = Column(TINYTEXT)
+	countryname = Column(TINYTEXT)
+	countrycode = Column(String(2))
+	contenttype = Column(TINYTEXT)
+	isPageview = Column(Boolean)
+
+Base.metadata.create_all(engine)
 
 class logHandler(object):
 	pVisit={} # page visits
@@ -28,6 +55,9 @@ class logHandler(object):
 
 	# processAccesLog
 	def processAccesLog(self):
+
+		Session = sessionmaker(bind=engine)
+		sess = Session()
 
 		for line in log:
 			# 0:host || 1:l || 2:user || 3:time || 4:request || 5:status || 6:bytes || 7:referer || 8:user-agent|| 9:contenttype
@@ -100,29 +130,11 @@ class logHandler(object):
 				bot = False	
 
 			if self.isPageview(bot, statuscode, contenttype, request):
-				pageview = '1'
+				pageview = True
 			else:
-				pageview = '0'
+				pageview = False
 
-			#Construct the SQL query
-			sql = ("INSERT INTO request (host, datetime, request, statuscode, bot, os, platformname, platformversion, browsername, browserversion, countryname, countrycode, contenttype, isPageview) VALUES "
-				"('{host}', "
-				"'{datetime}', "
-				"'{request}', "
-				"'{statuscode}', "
-				"{bot}, "
-				"'{os}', "
-				"'{platformname}', "
-				"'{platformversion}', "
-				"'{browsername}', "
-				"'{browserversion}', "
-				"'{countryname}', "
-				"'{countrycode}', "
-				"'{contenttype}', "
-				"'{isPageview}');"
-			)
-
-			formattedSql = sql.format(host=host,
+			request = Request(host=host,
 				datetime=datetime,
 				request=request, 
 				statuscode=statuscode, 
@@ -135,12 +147,12 @@ class logHandler(object):
 				countryname=countryName, 
 				countrycode=countryCode,
 				contenttype=contenttype,
-				isPageview=pageview)
+				isPageview=pageview
+				)
 
-			cursor.execute(formattedSql)
+			sess.add(request)
 		
-		connection.commit()
-		connection.close()
+		sess.commit()
 
 	def isPageview(self, bot, statuscode, contenttype, request):
 		if not bot and statuscode == "200":
