@@ -9,43 +9,15 @@ import httpagentparser
 import pymysql
 import string, random
 import ipaddress
-
-from sqlalchemy import create_engine, Column, String, Integer, DateTime, Boolean
-from sqlalchemy.ext.declarative import declarative_base
+from accesslogschema import engine, Request
 from sqlalchemy.orm.session import sessionmaker
-from sqlalchemy.dialects.mysql import LONGTEXT, TINYTEXT
-
 from time import gmtime, strftime
 from datetime import datetime
 
 log = open('/Applications/MAMP/logs/apache_access.log','r')
 
-engine = create_engine('mysql+pymysql://root:root@localhost:8889/accesslog-orm', echo=True)
-Base = declarative_base()
-
 requestblacklist = [".png", ".jpeg", ".jpg", ".js", ".xml"]
 contenttypewhitelist = ["text/html"]
-
-class Request(Base):
-	__tablename__ = 'requests'
-
-	id = Column(Integer, primary_key=True)
-	host = Column(String(20))
-	datetime = Column(DateTime)
-	request = Column(LONGTEXT)
-	statuscode = Column(String(3))
-	bot = Column(Boolean)
-	os = Column(TINYTEXT)
-	platformname = Column(TINYTEXT)
-	platformversion = Column(TINYTEXT)
-	browsername = Column(TINYTEXT)
-	browserversion = Column(TINYTEXT)
-	countryname = Column(TINYTEXT)
-	countrycode = Column(String(2))
-	contenttype = Column(TINYTEXT)
-	isPageview = Column(Boolean)
-
-Base.metadata.create_all(engine)
 
 class logHandler(object):
 	pVisit={} # page visits
