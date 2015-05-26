@@ -16,6 +16,8 @@ from datetime import datetime
 
 log = open('/Applications/MAMP/logs/apache_access.log','r')
 
+debugcountrycodelist = ['NL', 'UK', 'US', 'DE', 'AU', 'FR', 'RU', 'CA', 'SP', 'JP', 'CH', 'IT']
+
 requestblacklist = [".png", ".jpeg", ".jpg", ".js", ".xml"]
 contenttypewhitelist = ["text/html"]
 
@@ -87,7 +89,10 @@ class logHandler(object):
 			try:
 				country = self.getCountry(host)
 				countryName = country[0]
-				countryCode = country[1]
+#				countryCode = country[1]
+				#Choose a random country code for debugging purposes
+				countryCode = random.choice(debugcountrycodelist)
+				
 			except ValueError:	
 				countryName = ''
 				countryCode = ''
