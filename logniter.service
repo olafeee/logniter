@@ -1,0 +1,9 @@
+[Unit]
+Description=logniter v0.1
+After=syslog.target network.target
+[Service]
+ExecStart=/usr/local/bin/python3 /etc/logniter/logniter.py
+ExecStop=/usr/bin/kill -15 $MAINPID
+Restart=on-abort
+[Install]
+WantedBy=multi-user.target
