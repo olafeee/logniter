@@ -17,8 +17,8 @@ class sett():
 			dbconfig['DBName']
 		)
 
-		#self.engine = create_engine(self.enginestring, echo=echo)
-		#self.Base = declarative_base()
+		self.engine = create_engine(self.enginestring, echo=echo)
+		self.Base = declarative_base()
 
 
 
