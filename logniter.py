@@ -42,7 +42,7 @@ def Collector():
         time.sleep(5)
 
 def Consumer(x):
-    pal.processAccesLog() 
+    #pal.processAccesLog() 
     #cc.processDailypageviews()
     #cc.processDailypageviewsPerCountry()
     call(["touch", "/etc/logniter/test12312312polzei.txt"])
