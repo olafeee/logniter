@@ -6,6 +6,7 @@ import configparser
 from time import sleep
 from multiprocessing.pool import ThreadPool
 from collect import logHandler
+from cachecruncher import cacheCruncher
 
 class settings():
      def __init__(self):
@@ -21,7 +22,7 @@ def signal_handler(signal, frame):
     try:
         pool.join()
     except:
-        print('error closing pool')
+        x = 1
     t.join()
     call(["touch", "/etc/logniter/exit.txt"])
     sys.exit(0)
@@ -35,18 +36,21 @@ def Collector():
                 pool.apply_async(Consumer, args=(time.strftime("%M"),))
             pool.close()
             settings.hsr = time.strftime("%M")
+            sommen = open('x.log',"w")
+            sommen.close()
         time.sleep(5)
 
 def Consumer(x):
-    
-    pal.processAccesLog()
+    pal.processAccesLog() 
+    cc.processDailypageviews()
+    cc.processDailypageviewsPerCountry()
 
 if __name__ == "__main__":
     #load classes
     settings = settings()
     pal = logHandler(settings)
+    cc = cacheCruncher()
     collector = threading.Thread(target=Collector, args=())
     collector.start()
-    print('wait for sig')
     signal.signal(signal.SIGTERM, signal_handler)
     signal.pause()

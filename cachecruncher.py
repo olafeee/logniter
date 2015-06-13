@@ -47,8 +47,3 @@ class cacheCruncher(object):
 			self.sess.add(dailypageviewspercountry_orm)
 		
 		self.sess.commit()
-
-if __name__ == "__main__":
-	cc = cacheCruncher()
-	cc.processDailypageviews()
-	cc.processDailypageviewsPerCountry()
