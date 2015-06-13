@@ -7,7 +7,7 @@ from time import sleep
 from multiprocessing.pool import ThreadPool
 
 from collect import logHandler
-#from cachecruncher import cacheCruncher
+from cachecruncher import cacheCruncher
 
 class settings():
      def __init__(self):
