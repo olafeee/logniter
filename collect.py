@@ -3,15 +3,13 @@
 # version 0.1
 # developed in python v3.4          
 # made by Olaf Elzinga & Bas Alphenaar
-
 import os, sys, collections, time
 import pygeoip
 import httpagentparser
 import pymysql
 import string, random
 import ipaddress
-#from accesslogschema import engine, Request
-#from accesslogschema import als
+from accesslogschema import engine, Request
 from sqlalchemy.orm.session import sessionmaker
 from time import gmtime, strftime
 from datetime import datetime
@@ -32,7 +30,7 @@ class logHandler(object):
 	# processAccesLog
 	def processAccesLog(self):
 
-		Session = sessionmaker(bind=als.engine)
+		Session = sessionmaker(bind=engine)
 		sess = Session()
 
 		for line in self.log:
@@ -113,7 +111,7 @@ class logHandler(object):
 			else:
 				pageview = False
 
-			request = als.Request(host=host,
+			request = Request(host=host,
 				datetime=datetime,
 				request=request, 
 				statuscode=statuscode, 

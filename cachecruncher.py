@@ -1,7 +1,6 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 import pymysql
-#from accesslogschema import engine, Dailypageviews, Request, DailypageviewsPerCountry
-#from accesslogschema import als
+from accesslogschema import engine, Dailypageviews, Request, DailypageviewsPerCountry
 from sqlalchemy.orm.session import sessionmaker
 from sqlalchemy.sql.expression import func
 
@@ -48,3 +47,8 @@ class cacheCruncher(object):
 			self.sess.add(dailypageviewspercountry_orm)
 		
 		self.sess.commit()
+
+if __name__ == "__main__":
+	cc = cacheCruncher()
+	cc.processDailypageviews()
+	cc.processDailypageviewsPerCountry()
