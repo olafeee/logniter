@@ -10,7 +10,7 @@ import httpagentparser
 import pymysql
 import string, random
 import ipaddress
-from accesslogschema import engine, Request
+#from accesslogschema import engine, Request
 from sqlalchemy.orm.session import sessionmaker
 from time import gmtime, strftime
 from datetime import datetime
