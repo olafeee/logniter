@@ -14,7 +14,6 @@ class settings():
          self.config = configparser.ConfigParser()
          self.config.read('logniter.config')
          self.poolrun = False
-         #self.hsr = int(time.strftime("%H"))-1 #hour of last run
          self.hsr = int(time.strftime("%M"))-1 #hour of last run
           
 def signal_handler(signal, frame):
@@ -23,7 +22,7 @@ def signal_handler(signal, frame):
         pool.join()
     except:
         x = 1
-    t.join()
+    collector.join()
     call(["touch", "/etc/logniter/exit.txt"])
     sys.exit(0)
 
@@ -36,14 +35,15 @@ def Collector():
                 pool.apply_async(Consumer, args=(time.strftime("%M"),))
             pool.close()
             settings.hsr = time.strftime("%M")
-            sommen = open('x.log',"w")
-            sommen.close()
+            #sommen = open('x.log',"w")
+            #sommen.close()
+        call(["touch", "/etc/logniter/exit.txt"])
         time.sleep(5)
 
 def Consumer(x):
-    #pal.processAccesLog() 
-    #cc.processDailypageviews()
-    #cc.processDailypageviewsPerCountry()
+    pal.processAccesLog() 
+    cc.processDailypageviews()
+    cc.processDailypageviewsPerCountry()
     call(["touch", "/etc/logniter/test.txt"])
 
 if __name__ == "__main__":
@@ -51,7 +51,9 @@ if __name__ == "__main__":
     settings = settings()
     pal = logHandler(settings)
     cc = cacheCruncher()
+    #start thread
     collector = threading.Thread(target=Collector, args=())
     collector.start()
+    #signal
     signal.signal(signal.SIGTERM, signal_handler)
     signal.pause()

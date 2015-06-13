@@ -22,6 +22,7 @@ echo = dbconfig.getboolean('Debug')
 engine = create_engine(enginestring, echo=echo)
 Base = declarative_base()
 
+print('mi amigo')
 
 class Request(Base):
 	__tablename__ = 'requests'
