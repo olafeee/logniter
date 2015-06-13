@@ -21,3 +21,7 @@ case "$1" in
     stop   
     ;;
   *)
+    echo "Usage: /etc/init.d/tornado-tts {start|stop|restart}"
+    exit 1
+esac
+exit 0
