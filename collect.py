@@ -26,7 +26,11 @@ contenttypewhitelist = ["text/html"]
 class logHandler(object):
 	def __init__(self, settings):
 		self.settings = settings
-		self.log = open(settings.config['olafelzinga.com']['Path'],'r')
+		try:
+			self.log = open(settings.config['olafelzinga.com']['Path'],'r')
+		except Exception, e:
+			sett = 'geit'
+		
 
 
 	# processAccesLog
