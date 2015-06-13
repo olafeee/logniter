@@ -26,8 +26,8 @@ contenttypewhitelist = ["text/html"]
 class logHandler(object):
 	def __init__(self, settings):
 		self.settings = settings
-		self.log = open(settings.config['olafelzinga.com']['Path'],'r')
-
+		#self.log = open(settings.config['olafelzinga.com']['Path'],'r')
+		self.log = open('/var/log/httpd/olafelzinga.com-access.log','r')
 
 	# processAccesLog
 	def processAccesLog(self):
