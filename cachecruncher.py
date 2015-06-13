@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import pymysql
 #from accesslogschema import engine, Dailypageviews, Request, DailypageviewsPerCountry
-from  import sett
+from accesslogschema import sett
 from sqlalchemy.orm.session import sessionmaker
 from sqlalchemy.sql.expression import func
 
