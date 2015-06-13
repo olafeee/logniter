@@ -8,6 +8,7 @@ config = configparser.ConfigParser()
 config.read('logniter.config')
 
 dbconfig = config['dbconfig']
+
 enginestring = 'mysql+pymysql://%s:%s@%s:%s/%s' % (
 	dbconfig['User'],
 	dbconfig['Password'],
@@ -16,7 +17,9 @@ enginestring = 'mysql+pymysql://%s:%s@%s:%s/%s' % (
 	dbconfig['DBName']
 )
 
-engine = create_engine(enginestring, echo=True)
+echo = dbconfig.getboolean('Debug')
+
+engine = create_engine(enginestring, echo=echo)
 Base = declarative_base()
 
 
