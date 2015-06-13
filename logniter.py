@@ -5,7 +5,7 @@ import threading
 import configparser
 from time import sleep
 from multiprocessing.pool import ThreadPool
-#from collect import logHandler
+from collect import logHandler
 
 class settings():
      def __init__(self):
