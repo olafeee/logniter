@@ -48,7 +48,9 @@ def Consumer(x):
 
 if __name__ == "__main__":
     #load classes
-    #settings = settings()
+    settings = settings()
+    
+    #no
     pal = logHandler(settings)
     #cc = cacheCruncher()
     #start thread
