@@ -42,14 +42,14 @@ def Collector():
 
 def Consumer(x):
     pal.processAccesLog() 
-    cc.processDailypageviews()
-    cc.processDailypageviewsPerCountry()
-    call(["touch", "/etc/logniter/test.txt"])
+    #cc.processDailypageviews()
+    #cc.processDailypageviewsPerCountry()
+    call(["touch", "/etc/logniter/test12312312polzei.txt"])
 
 if __name__ == "__main__":
     #load classes
     #settings = settings()
-    #pal = logHandler(settings)
+    pal = logHandler(settings)
     #cc = cacheCruncher()
     #start thread
     collector = threading.Thread(target=Collector, args=())
