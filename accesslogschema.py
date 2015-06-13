@@ -20,6 +20,28 @@ class sett():
 		self.engine = create_engine(self.enginestring, echo=echo)
 		self.Base = declarative_base()
 
+		class Request(self.Base):
+			__tablename__ = 'requests'
+
+			id = Column(Integer, primary_key=True)
+			host = Column(String(20))
+			datetime = Column(DateTime)
+			request = Column(LONGTEXT)
+			statuscode = Column(String(3))
+			bot = Column(Boolean)
+			os = Column(TINYTEXT)
+			platformname = Column(TINYTEXT)
+			platformversion = Column(TINYTEXT)
+			browsername = Column(TINYTEXT)
+			browserversion = Column(TINYTEXT)
+			countryname = Column(TINYTEXT)
+			countrycode = Column(String(2))
+			contenttype = Column(TINYTEXT)
+			isPageview = Column(Boolean)
+
+			def __repr__(self):
+				return "<Request(request=%s, datetime=%s, isPageview=%s)" % (self.request, self.datetime, self.isPageview)
+
 
 
 
