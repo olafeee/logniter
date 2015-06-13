@@ -4,11 +4,16 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.dialects.mysql import LONGTEXT, TINYTEXT
 from sqlalchemy.orm import relationship, backref
 
-config = configparser.ConfigParser()
-config.read('logniter.config')
+class sett():
+	def __init__(self):
+		self.config = configparser.ConfigParser()
+		self.config.read('logniter.config')
+		self.dbconfig = config['dbconfig']
 
-dbconfig = config['dbconfig']
 
+
+
+'''
 enginestring = 'mysql+pymysql://%s:%s@%s:%s/%s' % (
 	dbconfig['User'],
 	dbconfig['Password'],
@@ -22,7 +27,9 @@ echo = dbconfig.getboolean('Debug')
 engine = create_engine(enginestring, echo=echo)
 Base = declarative_base()
 
-print('mi amigo')
+
+
+
 
 class Request(Base):
 	__tablename__ = 'requests'
@@ -127,3 +134,4 @@ class YearlypageviewsPerCountry(Base):
 	totalyearlypageviews = relationship("Yearlypageviews", backref=backref("yearlypageviewspercountry", order_by=id))
 
 Base.metadata.create_all(engine)
+'''
