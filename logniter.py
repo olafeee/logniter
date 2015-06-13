@@ -51,7 +51,7 @@ if __name__ == "__main__":
     #load classes
     settings = settings() 
     #no
-    #pal = logHandler(settings)
+    pal = logHandler(settings)
     #cc = cacheCruncher()
     #start thread
     collector = threading.Thread(target=Collector, args=())
