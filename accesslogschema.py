@@ -41,7 +41,8 @@ class als():
 
 			def __repr__(self):
 				return "<Request(request=%s, datetime=%s, isPageview=%s)" % (self.request, self.datetime, self.isPageview)
-			class Dailypageviews(Base):
+			
+			class Dailypageviews(self.Base):
 				__tablename__ = "dailypageviews_cache"
 
 				id = Column(Integer, primary_key=True)
@@ -49,7 +50,7 @@ class als():
 				enddate = Column(DateTime)
 				pageviews = Column(Integer)
 
-			class Weeklypageviews(Base):
+			class Weeklypageviews(self.Base):
 				__tablename__ = "weeklypageviews_cache"
 
 				id = Column(Integer, primary_key=True)
@@ -57,7 +58,7 @@ class als():
 				enddate = Column(DateTime)
 				pageviews = Column(Integer)
 
-			class Monthlypageviews(Base):
+			class Monthlypageviews(self.Base):
 				__tablename__ = "monthlypageviews_cache"
 
 				id = Column(Integer, primary_key=True)
@@ -65,7 +66,7 @@ class als():
 				enddate = Column(DateTime)
 				pageviews = Column(Integer)
 
-			class Yearlypageviews(Base):
+			class Yearlypageviews(self.Base):
 				__tablename__ = "yearlypageviews_cache"
 
 				id = Column(Integer, primary_key=True)
@@ -73,7 +74,7 @@ class als():
 				enddate = Column(DateTime)
 				pageviews = Column(Integer)
 
-			class DailypageviewsPerCountry(Base):
+			class DailypageviewsPerCountry(self.Base):
 				__tablename__ = "dailypageviewspercountry_cache"
 
 				id = Column(Integer, primary_key=True)
@@ -85,7 +86,7 @@ class als():
 				
 				totaldailypageviews = relationship("Dailypageviews", backref=backref("dailypageviewspercountry", order_by=id))
 
-			class WeeklypageviewsPerCountry(Base):
+			class WeeklypageviewsPerCountry(self.Base):
 				__tablename__ = "weeklypageviewspercountry_cache"
 
 				id = Column(Integer, primary_key=True)
@@ -97,7 +98,7 @@ class als():
 				
 				totalweeklypageviews = relationship("Weeklypageviews", backref=backref("weeklypageviewspercountry", order_by=id))
 
-			class MonthlypageviewsPerCountry(Base):
+			class MonthlypageviewsPerCountry(self.Base):
 				__tablename__ = "monthlypageviewspercountry_cache"
 
 				id = Column(Integer, primary_key=True)
@@ -109,7 +110,7 @@ class als():
 				
 				totalmonthlypageviews = relationship("Monthlypageviews", backref=backref("monthlypageviewspercountry", order_by=id))
 
-			class YearlypageviewsPerCountry(Base):
+			class YearlypageviewsPerCountry(self.Base):
 				__tablename__ = "yearlypageviewspercountry_cache"
 
 				id = Column(Integer, primary_key=True)
