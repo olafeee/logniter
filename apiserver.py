@@ -1,12 +1,15 @@
 import bottle
-from bottle import route
+from bottle import route, request, post
 from bottle.ext.sqlalchemy import SQLAlchemyPlugin
 from accesslogschema import engine, Base, Dailypageviews, DailypageviewsPerCountry
 from sqlalchemy.orm.session import sessionmaker
         
-@route('/test')
+@post('/test')
 def test(db):
 	allDailypageviewsPerCountry = db.query(DailypageviewsPerCountry).all()
+	
+	startdate = request.json['startdate']
+	enddate = request.json['enddate']
 	
 	alldpvDict = {'data' : []}
 	
@@ -22,4 +25,4 @@ def test(db):
 
 if __name__ == '__main__':
 	bottle.install(SQLAlchemyPlugin(engine, Base.metadata, create=True))
-	bottle.run(host='localhost', port=8080, debug=True)
+	bottle.run(host='localhost', port=8080, debug=True, reloader=True)

@@ -14,7 +14,7 @@ from sqlalchemy.orm.session import sessionmaker
 from time import gmtime, strftime
 from datetime import datetime
 
-log = open('/Applications/MAMP/logs/apache_access.log','r')
+
 
 debugcountrycodelist = ['NL', 'UK', 'US', 'DE', 'AU', 'FR', 'RU', 'CA', 'SP', 'JP', 'CH', 'IT']
 
@@ -22,10 +22,10 @@ requestblacklist = [".png", ".jpeg", ".jpg", ".js", ".xml"]
 contenttypewhitelist = ["text/html"]
 
 class logHandler(object):
-	pVisit={} # page visits
-	hPage={} # hits per hour inc. bot boolean
-	uniqueVisi={} #unique vistors + os & browser + country
-	countryDict={}
+	def __init__(self, settings):
+		self.settings = settings
+		self.log = open(settings.config['olafelzinga.com']['Path'],'r')
+
 
 	# processAccesLog
 	def processAccesLog(self):
@@ -33,7 +33,7 @@ class logHandler(object):
 		Session = sessionmaker(bind=engine)
 		sess = Session()
 
-		for line in log:
+		for line in self.log:
 			# 0:host || 1:l || 2:user || 3:time || 4:request || 5:status || 6:bytes || 7:referer || 8:user-agent|| 9:contenttype
 			array = (line.split('||'))
 			
@@ -156,8 +156,3 @@ class logHandler(object):
 			return gi.country_name_by_addr(ip), gi.country_code_by_addr(ip)
 		except ValueError:
 			raise ValueError('Not a valid IP')
-
-
-if __name__ == "__main__":
-	pal = logHandler()
-	pal.processAccesLog()

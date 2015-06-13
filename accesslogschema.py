@@ -1,10 +1,24 @@
+import configparser
 from sqlalchemy import create_engine, Column, String, Integer, DateTime, Boolean, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.dialects.mysql import LONGTEXT, TINYTEXT
 from sqlalchemy.orm import relationship, backref
 
-engine = create_engine('mysql+pymysql://root:root@localhost:8889/accesslog-orm', echo=True)
+config = configparser.ConfigParser()
+config.read('logniter.config')
+
+dbconfig = config['dbconfig']
+enginestring = 'mysql+pymysql://%s:%s@%s:%s/%s' % (
+	dbconfig['User'],
+	dbconfig['Password'],
+	dbconfig['Host'],
+	dbconfig['Port'],
+	dbconfig['DBName']
+)
+
+engine = create_engine(enginestring, echo=True)
 Base = declarative_base()
+
 
 class Request(Base):
 	__tablename__ = 'requests'

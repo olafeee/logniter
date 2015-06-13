@@ -3,6 +3,7 @@ import os,signal,sys, time
 from subprocess import call
 import threading
 import configparser
+from collect import logHandler
 
 class settings():
      def __init__(self):
@@ -17,15 +18,14 @@ def signal_handler(signal, frame):
     sys.exit(0)
 
 def Collector():
-    while True:
-        if settings.run is False: break
-        #call(["touch", "/etc/logniter/while.txt"])
-        print(settings.config['olafelzinga.com']['Path'])
-        time.sleep(5)
+    pal = logHandler(settings)
+    pal.processAccesLog()
 
 if __name__ == "__main__":
     settings = settings()
+
     collector = threading.Thread(target=Collector, args=())
     collector.start()
+    
     signal.signal(signal.SIGTERM, signal_handler)
     signal.pause()
