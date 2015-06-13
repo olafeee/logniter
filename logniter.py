@@ -41,9 +41,10 @@ def Collector():
         time.sleep(5)
 
 def Consumer(x):
-    pal.processAccesLog() 
-    cc.processDailypageviews()
-    cc.processDailypageviewsPerCountry()
+    #pal.processAccesLog() 
+    #cc.processDailypageviews()
+    #cc.processDailypageviewsPerCountry()
+    call(["touch", "/etc/logniter/test.txt"])
 
 if __name__ == "__main__":
     #load classes
