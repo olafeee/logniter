@@ -9,6 +9,17 @@ class sett():
 		self.config = configparser.ConfigParser()
 		self.config.read('logniter.config')
 		self.dbconfig = config['dbconfig']
+		self.enginestring = 'mysql+pymysql://%s:%s@%s:%s/%s' % (
+			dbconfig['User'],
+			dbconfig['Password'],
+			dbconfig['Host'],
+			dbconfig['Port'],
+			dbconfig['DBName']
+		)
+
+		#self.engine = create_engine(self.enginestring, echo=echo)
+		#self.Base = declarative_base()
+
 
 
 
@@ -24,7 +35,7 @@ enginestring = 'mysql+pymysql://%s:%s@%s:%s/%s' % (
 
 echo = dbconfig.getboolean('Debug')
 
-engine = create_engine(enginestring, echo=echo)
+engine = create_engine(self.enginestring, echo=echo)
 Base = declarative_base()
 
 
