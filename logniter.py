@@ -51,6 +51,7 @@ if __name__ == "__main__":
     #load classes
     settings = settings() 
     #no
+    call(["touch", "/etc/logniter/voordat henkie klapt.txt"])
     pal = logHandler(settings)
     #cc = cacheCruncher()
     #start thread
