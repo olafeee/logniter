@@ -11,6 +11,7 @@ import pymysql
 import string, random
 import ipaddress
 #from accesslogschema import engine, Request
+from accesslogschema import als
 from sqlalchemy.orm.session import sessionmaker
 from time import gmtime, strftime
 from datetime import datetime
@@ -31,7 +32,7 @@ class logHandler(object):
 	# processAccesLog
 	def processAccesLog(self):
 
-		Session = sessionmaker(bind=engine)
+		Session = sessionmaker(bind=als.engine)
 		sess = Session()
 
 		for line in self.log:
@@ -112,7 +113,7 @@ class logHandler(object):
 			else:
 				pageview = False
 
-			request = Request(host=host,
+			request = als.Request(host=host,
 				datetime=datetime,
 				request=request, 
 				statuscode=statuscode, 
