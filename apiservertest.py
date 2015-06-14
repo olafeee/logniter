@@ -44,4 +44,7 @@ class APIServer(object):
 
         return returnDict
 
+if __name__ == "__main__":
+    apiserver = APIServer()
+
     
