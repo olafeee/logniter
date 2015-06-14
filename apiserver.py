@@ -18,7 +18,7 @@ class APIServer(object):
         print('app close')
         self.app.close()
 
-    @app.post('/pageviewspercountry')
+    @self.app.post('/pageviewspercountry')
     def pageviewspercountry(db):
         
         startdatestring = request.json['startdate']
