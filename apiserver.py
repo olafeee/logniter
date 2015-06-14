@@ -8,9 +8,10 @@ from datetime import datetime
 
 class APIServer(object):
 
+    app = Bottle()
+    
     def __init__(self):
         print('api app started')
-        self.app = Bottle()
         self.app.install(SQLAlchemyPlugin(engine, Base.metadata, create=True))
         run(self.app, host='localhost', port=8080, debug=True, reloader=True)
 
@@ -18,7 +19,7 @@ class APIServer(object):
         print('app close')
         self.app.close()
 
-    @self.app.post('/pageviewspercountry')
+    @app.post('/pageviewspercountry')
     def pageviewspercountry(db):
         
         startdatestring = request.json['startdate']
