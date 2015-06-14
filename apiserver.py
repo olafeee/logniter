@@ -8,9 +8,8 @@ from datetime import datetime
 
 class APIServer(object):
 
-    app = Bottle()
-
     def __init__(self):
+        self.app = Bottle()
         self.app.install(SQLAlchemyPlugin(engine, Base.metadata, create=True))
         run(self.app, host='localhost', port=8080, debug=True, reloader=True)
 
@@ -41,6 +40,4 @@ class APIServer(object):
             returnDict['returndata'].append(tempDict)
 
         return returnDict
-
-if __name__ == '__main__':
-    apiserver = APIServer()
+    

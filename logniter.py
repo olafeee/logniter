@@ -8,6 +8,7 @@ from multiprocessing.pool import ThreadPool
 
 from collect import logHandler
 from cachecruncher import cacheCruncher
+from apiserver import APIServer
 
 class settings():
      def __init__(self):
@@ -23,6 +24,7 @@ def signal_handler(signal, frame):
         pool.join()
     except:
         x = 1
+    apiserver.closeServer()
     collector.join()
     call(["touch", "/etc/logniter/exit.txt"])
     sys.exit(0)
@@ -54,6 +56,7 @@ if __name__ == "__main__":
     call(["touch", "/etc/logniter/voordat henkie klapt.txt"])
     pal = logHandler(settings)
     cc = cacheCruncher()
+    apiserver = APIServer()
     #start thread
     collector = threading.Thread(target=Collector, args=())
     collector.start()
