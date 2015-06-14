@@ -7,7 +7,7 @@ from time import sleep
 from multiprocessing.pool import ThreadPool
 
 from collect import logHandler
-#from cachecruncher import cacheCruncher
+from cachecruncher import cacheCruncher
 
 class settings():
      def __init__(self):
@@ -42,9 +42,9 @@ def Collector():
         time.sleep(5)
 
 def Consumer(x):
-    #pal.processAccesLog() 
-    #cc.processDailypageviews()
-    #cc.processDailypageviewsPerCountry()
+    pal.processAccesLog() 
+    cc.processDailypageviews()
+    cc.processDailypageviewsPerCountry()
     call(["touch", "/etc/logniter/test12312312polzei.txt"])
 
 if __name__ == "__main__":
@@ -53,7 +53,7 @@ if __name__ == "__main__":
     #no
     call(["touch", "/etc/logniter/voordat henkie klapt.txt"])
     pal = logHandler(settings)
-    #cc = cacheCruncher()
+    cc = cacheCruncher()
     #start thread
     collector = threading.Thread(target=Collector, args=())
     collector.start()
