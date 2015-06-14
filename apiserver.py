@@ -9,11 +9,13 @@ from datetime import datetime
 class APIServer(object):
 
     def __init__(self):
+        print('api app started')
         self.app = Bottle()
         self.app.install(SQLAlchemyPlugin(engine, Base.metadata, create=True))
         run(self.app, host='localhost', port=8080, debug=True, reloader=True)
 
     def closeServer(self):
+        print('app close')
         self.app.close()
 
     @app.post('/pageviewspercountry')
