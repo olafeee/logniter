@@ -71,6 +71,3 @@ class APIServer(object):
             returnDict['returndata']['platformstats'].append(tempDict)
 
         return returnDict
-
-if __name__ == "__main__":
-    apiserver = APIServer()
