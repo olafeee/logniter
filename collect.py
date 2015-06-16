@@ -26,11 +26,11 @@ class logHandler(object):
     def __init__(self, settings):
         self.settings = settings
         self.log = open(settings.config['olafelzinga.com']['Path'],'r')
-
+        '''
     def __init__(self):
         config = configparser.ConfigParser()
         config.read('logniter.config')
-        self.log = open(config['olafelzinga.com']['Path'],'r')
+        self.log = open(config['olafelzinga.com']['Path'],'r')'''
 
     # processAccesLog
     def processAccesLog(self):
@@ -162,7 +162,8 @@ class logHandler(object):
         except ValueError:
             raise ValueError('Not a valid IP')
 
+'''
 if __name__ == '__main__':
     print('hahah main is loaded')
     lh = logHandler()
-    lh.processAccesLog()
+    lh.processAccesLog()'''
