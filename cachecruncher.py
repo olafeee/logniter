@@ -89,6 +89,7 @@ class cacheCruncher(object):
 		self.sess.commit()
 
 if __name__ == '__main__':
+	print('hahah main is loaded')
 	cc = cacheCruncher()
 	cc.processDailypageviews()
 	cc.processDailypageviewsPerCountry()

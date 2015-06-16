@@ -163,5 +163,6 @@ class logHandler(object):
             raise ValueError('Not a valid IP')
 
 if __name__ == '__main__':
+    print('hahah main is loaded')
     lh = logHandler()
     lh.processAccesLog()
