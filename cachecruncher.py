@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 import pymysql
-from accesslogschema import engine, Dailypageviews, Monthlypageviews, Request, DailypageviewsPerCountry, MonthlypageviewsPerCountry
+from accesslogschema import engine, Dailypageviews, Monthlypageviews, Weeklypageviews, WeeklypageviewsPerCountry, Request, DailypageviewsPerCountry, MonthlypageviewsPerCountry
 from sqlalchemy.orm.session import sessionmaker
 from sqlalchemy.sql.expression import func
 from calendar import monthrange
+from datetime import timedelta
 
 
 class cacheCruncher(object):
@@ -87,11 +88,52 @@ class cacheCruncher(object):
 			self.sess.add(monthlypageviewspercountry_orm)
 
 		self.sess.commit()
-'''
+
+	def processWeeklypageviews(self):
+		weeklypageviews = self.sess.query(Request.datetime, func.count(Request.datetime)).filter_by(isPageview=True).order_by(Request.datetime).group_by(func.week(Request.datetime))
+
+		for weeklypageviewscount in weeklypageviews:
+
+			fetchedDate = weeklypageviewscount[0]
+
+			startdate = (fetchedDate - timedelta(days = fetchedDate.weekday())).replace(hour=0, minute=0, second=0, microsecond=0)
+			enddate = (startdate + timedelta(days = 6)).replace(hour=23, minute=59, second=59, microsecond=999)
+			pageviews = weeklypageviewscount[1]
+
+			weeklypageview = Weeklypageviews(startdate=startdate,
+				enddate=enddate,
+				pageviews=pageviews)
+
+			self.sess.add(weeklypageview)
+
+		self.sess.commit()
+
+	def processWeeklypageviewsPerCountry(self):
+		weeklypageviewspercountry = self.sess.query(Request.datetime, Request.countrycode, func.count(Request.datetime)).filter_by(isPageview=True).order_by(Request.datetime).group_by(func.week(Request.datetime), Request.countrycode)
+
+		for weeklypageviewsforcountry in weeklypageviewspercountry:
+
+			fetchedDate = weeklypageviewsforcountry[0]
+			
+			startdate = (fetchedDate - timedelta(days = fetchedDate.weekday())).replace(hour=0, minute=0, second=0, microsecond=0)
+			enddate = (startdate + timedelta(days = 6)).replace(hour=23, minute=59, second=59, microsecond=999)
+			countrycode = weeklypageviewsforcountry[1]
+			pageviews = weeklypageviewsforcountry[2]
+
+			weeklypageviewspercountry_orm = WeeklypageviewsPerCountry(startdate=startdate,
+				enddate=enddate,
+				countrycode=countrycode,
+				pageviews=pageviews)
+
+			self.sess.add(weeklypageviewspercountry_orm)
+
+		self.sess.commit()
+
 if __name__ == '__main__':
-	print('hahah main is loaded')
-	cc = cacheCruncher()
-	cc.processDailypageviews()
-	cc.processDailypageviewsPerCountry()
-	cc.processMonthlypageviews()
-	cc.processMonthlypageviewsPerCountry()'''
+	# cc = cacheCruncher()
+	# cc.processDailypageviews()
+	# cc.processDailypageviewsPerCountry()
+	# cc.processMonthlypageviews()
+	# cc.processMonthlypageviewsPerCountry()
+	# cc.processWeeklypageviews()
+	# cc.processWeeklypageviewsPerCountry()

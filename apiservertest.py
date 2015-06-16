@@ -1,7 +1,7 @@
 import bottle
 from bottle import Bottle, run, request
 from bottle.ext.sqlalchemy import SQLAlchemyPlugin
-from accesslogschema import engine, Base, Dailypageviews, DailypageviewsPerCountry, Monthlypageviews, Request
+from accesslogschema import engine, Base, Dailypageviews, DailypageviewsPerCountry, Monthlypageviews, Weeklypageviews, Request
 from sqlalchemy.orm.session import sessionmaker
 from sqlalchemy.sql.expression import and_, func, between
 from datetime import datetime
@@ -59,6 +59,23 @@ class APIServer(object):
             tempDict = {'monthnumber' : pageviewsPerMonth[0],
                     'montname' : month_name[pageviewsPerMonth[0]],
                     'pageviews' : pageviewsPerMonth[1]}
+
+            returnDict['returndata'].append(tempDict)
+
+        return returnDict
+
+    @app.post('/pageviewsperweek')
+    def pageviewsperweek(db):
+
+        year = request.json['year']
+
+        selectedPageviewsPerWeek = db.query(func.week(Weeklypageviews.startdate), Weeklypageviews.pageviews).filter(func.year(Weeklypageviews.startdate)==year).group_by(func.week(Weeklypageviews.startdate))
+
+        returnDict = {'postdata' : request.json, 'returndata' : []}
+
+        for pageviewsPerWeek in selectedPageviewsPerWeek:
+            tempDict = {'weeknumber' : pageviewsPerWeek[0],
+                    'pageviews' : pageviewsPerWeek[1]}
 
             returnDict['returndata'].append(tempDict)
 
