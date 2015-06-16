@@ -23,14 +23,17 @@ requestblacklist = [".png", ".jpeg", ".jpg", ".js", ".xml"]
 contenttypewhitelist = ["text/html"]
 
 class logHandler(object):
-    def __init__(self, settings):
-        self.settings = settings
-        self.log = open(settings.config['olafelzinga.com']['Path'],'r')
-        '''
-    def __init__(self):
-        config = configparser.ConfigParser()
-        config.read('logniter.config')
-        self.log = open(config['olafelzinga.com']['Path'],'r')'''
+    def __init__(self, settings = None):
+
+        # When running standalone
+        if settings is None:
+            config = configparser.ConfigParser()
+            config.read('logniter.config')
+            self.log = open(config['olafelzinga.com']['Path'],'r')
+        # When created as an object from another module
+        else:
+            self.settings = settings
+            self.log = open(settings.config['olafelzinga.com']['Path'],'r')
 
     # processAccesLog
     def processAccesLog(self):
