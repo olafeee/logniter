@@ -1,10 +1,11 @@
 import bottle
 from bottle import Bottle, run, request
 from bottle.ext.sqlalchemy import SQLAlchemyPlugin
-from accesslogschema import engine, Base, Dailypageviews, DailypageviewsPerCountry, Request
+from accesslogschema import engine, Base, Dailypageviews, DailypageviewsPerCountry, Monthlypageviews, Request
 from sqlalchemy.orm.session import sessionmaker
 from sqlalchemy.sql.expression import and_, func, between
 from datetime import datetime
+from calendar import month_name
 
 class APIServer(object):
 
@@ -29,7 +30,7 @@ class APIServer(object):
         startdate = datetime.strptime(startdatestring, dateformat)
         enddate = datetime.strptime(enddatestring, dateformat)
         
-        selectedDailypageviewsPerCountry = db.query(DailypageviewsPerCountry, func.count(DailypageviewsPerCountry.pageviews)).filter(
+        selectedDailypageviewsPerCountry = db.query(DailypageviewsPerCountry.countrycode, func.count(DailypageviewsPerCountry.pageviews)).filter(
             and_(DailypageviewsPerCountry.startdate >= startdate,
             DailypageviewsPerCountry.enddate <= enddate)).group_by(DailypageviewsPerCountry.countrycode)
         
@@ -38,7 +39,26 @@ class APIServer(object):
         for dailyPageviewsPerCountry in selectedDailypageviewsPerCountry:
             
             tempDict = {'pageviews' : dailyPageviewsPerCountry[1],
-                    'countrycode' : dailyPageviewsPerCountry[0].countrycode}
+                    'countrycode' : dailyPageviewsPerCountry[0]}
+
+            returnDict['returndata'].append(tempDict)
+
+        return returnDict
+
+    @app.post('/pageviewspermonth')
+    def pageviewspermonth(db):
+
+        year = request.json['year']
+
+        selectedPageviewsPerMonth = db.query(func.month(Monthlypageviews.startdate), Monthlypageviews.pageviews).filter(func.year(Monthlypageviews.startdate)==year).group_by(func.month(Monthlypageviews.startdate))
+
+        returnDict = {'postdata' : request.json, 'returndata' : []}
+
+        for pageviewsPerMonth in selectedPageviewsPerMonth:
+
+            tempDict = {'monthnumber' : pageviewsPerMonth[0],
+                    'montname' : month_name[pageviewsPerMonth[0]],
+                    'pageviews' : pageviewsPerMonth[1]}
 
             returnDict['returndata'].append(tempDict)
 
