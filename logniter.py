@@ -49,6 +49,8 @@ def Consumer(x):
     cc.processDailypageviewsPerCountry()
     cc.processMonthlypageviews()
     cc.processMonthlypageviewsPerCountry()
+    cc.processWeeklypageviews()
+    cc.processWeeklypageviewsPerCountry()
     call(["touch", "/etc/logniter/test12312312polzei.txt"])
 
 if __name__ == "__main__":
