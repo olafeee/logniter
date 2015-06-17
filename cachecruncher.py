@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import pymysql
-from accesslogschema import engine, Dailypageviews, Monthlypageviews, Weeklypageviews, WeeklypageviewsPerCountry, Request, DailypageviewsPerCountry, MonthlypageviewsPerCountry
+from accesslogschema import engine, Dailypageviews, Monthlypageviews, Weeklypageviews, WeeklypageviewsPerCountry, Request, DailypageviewsPerCountry, MonthlypageviewsPerCountry, DBTools
 from sqlalchemy.orm.session import sessionmaker
 from sqlalchemy.sql.expression import func
 from calendar import monthrange

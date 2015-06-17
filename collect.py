@@ -10,7 +10,7 @@ import pymysql
 import string, random
 import ipaddress
 import configparser
-from accesslogschema import engine, Request
+from accesslogschema import engine, Request, DBTools
 from sqlalchemy.orm.session import sessionmaker
 from time import gmtime, strftime
 from datetime import datetime
@@ -24,6 +24,8 @@ contenttypewhitelist = ["text/html"]
 
 class logHandler(object):
     def __init__(self, settings = None):
+
+        self.dbtools = DBTools()
 
         # When running standalone
         if settings is None:
@@ -118,6 +120,9 @@ class logHandler(object):
                 pageview = True
             else:
                 pageview = False
+
+            self.dbtools.get_or_create(
+                )
 
             request = Request(host=host,
                 datetime=datetime,

@@ -22,6 +22,18 @@ echo = dbconfig.getboolean('Debug')
 engine = create_engine(enginestring, echo=echo)
 Base = declarative_base()
 
+class DBTools(object):
+
+	def get_or_create(session, model, defaults=None, **kwargs):
+	    instance = session.query(model).filter_by(**kwargs).first()
+	    if instance:
+	        return instance, False
+	    else:
+	        params = dict((k, v) for k, v in kwargs.iteritems() if not isinstance(v, ClauseElement))
+	        params.update(defaults or {})
+	        instance = model(**params)
+	        session.add(instance)
+	        return instance, True
 
 class Request(Base):
 	__tablename__ = 'requests'
