@@ -1,0 +1,277 @@
+.container{
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.row{
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.img-logo{
+    height: 90px;
+    width: 90px;
+}
+
+.featurette-divider { margin: 80px 0; }
+
+/* Sticky footer styles
+-------------------------------------------------- */
+
+html,
+body {
+  height: 100%;
+  font-family: 'proxima-nova', sans-serif;
+  background: #F6F6F6;
+  /* The html and body elements cannot have any padding or margin. */
+}
+
+/* Wrapper for page content to push down footer */
+#wrap {
+  min-height: 100%;
+  height: auto;
+  /* Negative indent footer by its height */
+  margin: 0 auto -70px;
+  /* Pad bottom by footer height */
+  padding: 0 0 60px;
+}
+
+/* Set the fixed height of the footer here */
+#footer {
+  background-color: #747474;
+}
+
+#footer, #push{
+    height: 70px;
+}
+
+.info_box{
+    min-height: 20px;
+    padding: 12px;
+    margin-bottom: 20px;
+    background-color: #f5f5f5;
+    border: 1px solid #e3e3e3;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
+}
+
+
+.chart{
+    width: inherit;
+}
+
+.table-accesslog{
+    max-width: 300px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border: 1px solid #e3e3e3;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
+}
+.table-accesslog-td{
+    /*padding: 3px 20px;*/
+}
+
+/* Projects etc
+-------------------------------------------------- */
+
+.col-project{
+    height: 350px;
+    background: none repeat scroll 0% 0% #FFF;
+}
+
+.col-project-header{
+    text-align: center;
+    padding: 20px;
+}
+.col-project-text{
+    text-align: center;
+    padding: 20px;
+}
+
+
+.intro-projects{
+  background-color: inherit;
+  margin-top: -20px;
+}
+
+
+/* Projects etc
+-------------------------------------------------- */
+
+.col-project1{
+    height: 350px;
+    background: none repeat scroll 0% 0% #FFF;
+}
+
+.col-project-1header{
+    background:#E6E6E6;
+    text-align: center;
+    padding: 20px;
+}
+.col-project-t1ext{
+    text-align: center;
+    padding: 20px;
+}
+
+
+.intro-logzunder{
+  background-color: #3EB249;
+  margin-top: -20px;
+}
+
+/* Navbar etc
+-------------------------------------------------- */
+.nav-right{
+    float:right;
+}
+.nav-div{
+    background: #fcfcfc; /* Old browsers */
+    background: -moz-linear-gradient(left,  #fcfcfc 0%, #ededed 51%, #fcfcfc 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%,#fcfcfc), color-stop(51%,#ededed), color-stop(100%,#fcfcfc)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(left,  #fcfcfc 0%,#ededed 51%,#fcfcfc 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(left,  #fcfcfc 0%,#ededed 51%,#fcfcfc 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(left,  #fcfcfc 0%,#ededed 51%,#fcfcfc 100%); /* IE10+ */
+    background: linear-gradient(to right,  #fcfcfc 0%,#ededed 51%,#fcfcfc 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#fcfcfc',GradientType=1 ); /* IE6-9 */
+
+    border-radius: 0px;
+}
+
+
+
+
+
+
+
+
+
+/* Sticky footer styles
+-------------------------------------------------- */
+
+.onoffswitch {
+    position: relative; width: 76px;
+	float: left;
+    margin-left: 10px;
+    margin-top: 3px;
+    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+}
+.onoffswitch-checkbox {
+    display: none;
+}
+.onoffswitch-label {
+    display: block; overflow: hidden; cursor: pointer;
+    border: 0px solid #999999; border-radius: 0px;
+}
+.onoffswitch-inner {
+    display: block; width: 200%; margin-left: -100%;
+    -moz-transition: margin 0.3s ease-in 0s; -webkit-transition: margin 0.3s ease-in 0s;
+    -o-transition: margin 0.3s ease-in 0s; transition: margin 0.3s ease-in 0s;
+}
+.onoffswitch-inner > span {
+    display: block; float: left; position: relative; width: 50%; height: 26px; padding: 0; line-height: 26px;
+    font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+    -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+}
+.onoffswitch-inner .onoffswitch-active {
+    padding-left: 14px;
+    background-color: #CFC9C9; color: #FFFFFF;
+}
+.onoffswitch-inner .onoffswitch-inactive {
+    padding-right: 14px;
+    background-color: #CFC9C9; color: #FFFFFF;
+    text-align: right;
+}
+.onoffswitch-switch {
+    display: block; width: 36px; margin: 0px; text-align: center; 
+    border: 0px solid #999999;border-radius: 0px; 
+    position: absolute; top: 0; bottom: 0;
+}
+.onoffswitch-active .onoffswitch-switch {
+    background: #07D7DE; left: 0;
+}
+.onoffswitch-inactive .onoffswitch-switch {
+    background: #D13232; right: 0;
+}
+.onoffswitch-active .onoffswitch-switch:before {
+    content: " "; position: absolute; top: 0; left: 36px; 
+    border-style: solid; border-color: #07D7DE transparent transparent #07D7DE; border-width: 13px 7px;
+}
+.onoffswitch-inactive .onoffswitch-switch:before {
+    content: " "; position: absolute; top: 0; right: 36px; 
+    border-style: solid; border-color: transparent #D13232 #D13232 transparent; border-width: 13px 7px;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+    margin-left: 0;
+}
+
+/* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+
+.onoffswitch1 {
+    position: relative; width: 76px;
+   	float: left;
+    margin-left: 10px;
+    margin-top: 3px;
+    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+}
+.onoffswitch-checkbox1 {
+    display: none;
+}
+.onoffswitch-label1 {
+    display: block; overflow: hidden; cursor: pointer;
+    border: 0px solid #999999; border-radius: 0px;
+}
+.onoffswitch-inner1 {
+    display: block; width: 200%; margin-left: -100%;
+    -moz-transition: margin 0.3s ease-in 0s; -webkit-transition: margin 0.3s ease-in 0s;
+    -o-transition: margin 0.3s ease-in 0s; transition: margin 0.3s ease-in 0s;
+}
+.onoffswitch-inner1 > span {
+    display: block; float: left; position: relative; width: 50%; height: 26px; padding: 0; line-height: 26px;
+    font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+    -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+}
+.onoffswitch-inner1 .onoffswitch-active1 {
+    padding-left: 14px;
+    background-color: #CFC9C9; color: #FFFFFF;
+}
+.onoffswitch-inner1 .onoffswitch-inactive1 {
+    padding-right: 14px;
+    background-color: #CFC9C9; color: #FFFFFF;
+    text-align: right;
+}
+.onoffswitch-switch1 {
+    display: block; width: 50px; margin: 0px; text-align: center; 
+    border: 0px solid #999999;border-radius: 0px; 
+    position: absolute; top: 0; bottom: 0;
+}
+.onoffswitch-active1 .onoffswitch-switch1 {
+    background: #009900; left: 0;
+}
+.onoffswitch-inactive1 .onoffswitch-switch1 {
+    background: #E20074; right: 0;
+}
+.onoffswitch-active1 .onoffswitch-switch1:before {
+    content: " "; position: absolute; top: 0; left: 50px; 
+    border-style: solid; border-color: #009900 transparent transparent #009900; border-width: 13px 7px;
+}
+.onoffswitch-inactive1 .onoffswitch-switch1:before {
+    content: " "; position: absolute; top: 0; right: 50px; 
+    border-style: solid; border-color: transparent #E20074 #E20074 transparent; border-width: 13px 7px;
+}
+.onoffswitch-checkbox1:checked + .onoffswitch-label1 .onoffswitch-inner1 {
+    margin-left: 0;
+}
+
+.kpnlabel{ 
+	float: left;
+	margin-left: 20px;
+	margin-top: 3px;
+}
+
+.row1{
+	width: 100%;
+	float: left;
+}
