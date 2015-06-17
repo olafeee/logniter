@@ -78,6 +78,7 @@ class APIServer(object):
                     'pageviews' : pageviewsPerWeek[1]}
 
             returnDict['returndata'].append(tempDict)
+            print(returnDict)
 
         return returnDict
 
