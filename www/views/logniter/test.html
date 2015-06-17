@@ -1,0 +1,47 @@
+<script>
+var json_data = {"returndata": {"platformstats": [{"platform": null, "pageviews": 0}, {"platform": "Android", "pageviews": 16}, {"platform": "BlackBerry", "pageviews": 8}, {"platform": "Linux", "pageviews": 20}, {"platform": "Mac OS", "pageviews": 1060}, {"platform": "Windows", "pageviews": 7}], "browserstats": [{"pageviews": 80, "browser": ""}, {"pageviews": 1072, "browser": "Chrome"}, {"pageviews": 22, "browser": "Firefox"}, {"pageviews": 7, "browser": "Safari"}]}, "postdata": {"startdate": "01-01-2014", "enddate": "31-12-2015"}};
+
+        var platformstats = [['platformstats','pageviews'],];
+        var browserstats = [['browserstats','pageviews'],];
+        if(json_data['returndata']){
+            json_data = json_data['returndata'];
+            //var obj = JSON.parse(json);
+
+            for(var i in json_data){
+                for(var x in json_data['platformstats']){
+                    
+                    try {
+                        var bs_browser = json_data['browserstats'][x]['browser']
+                    }
+                    catch(err) {
+                        var bs_browser = 'no browser'
+                    } 
+                    try {
+                        var bs_pageviews = json_data['browserstats'][x]['pageviews']
+                    }
+                    catch(err) {
+                        var bs_pageviews = 'no views'
+                    }
+
+                    try {
+                        var ps_platform = json_data['platformstats'][x]['platform']
+                    }
+                    catch(err) {
+                        var ps_platform = 'no platform'
+                    }                    
+                    try {
+                        var ps_pageviews = json_data['platformstats'][x]['pageviews']
+                    }
+                    catch(err) {
+                        var ps_pageviews = 'no views'
+                    } 
+                    browserstats.push([bs_browser,bs_pageviews])
+                    platformstats.push([ps_platform,ps_pageviews])
+                }
+            }
+        }
+            console.log(platformstats)
+            console.log(browserstats)
+
+
+</script>

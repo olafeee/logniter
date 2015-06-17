@@ -130,10 +130,10 @@ class cacheCruncher(object):
 		self.sess.commit()
 
 if __name__ == '__main__':
-	# cc = cacheCruncher()
-	# cc.processDailypageviews()
-	# cc.processDailypageviewsPerCountry()
-	# cc.processMonthlypageviews()
-	# cc.processMonthlypageviewsPerCountry()
-	# cc.processWeeklypageviews()
-	# cc.processWeeklypageviewsPerCountry()
+	cc = cacheCruncher()
+	cc.processDailypageviews()
+	cc.processDailypageviewsPerCountry()
+	cc.processMonthlypageviews()
+	cc.processMonthlypageviewsPerCountry()
+	cc.processWeeklypageviews()
+	cc.processWeeklypageviewsPerCountry()
