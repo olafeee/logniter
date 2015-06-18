@@ -33,6 +33,8 @@ def signal_handler(signal, frame):
 def Collector():
     print('thread collector start')
     while settings.run is True:
+        print('123 backbar')
+        print(settings.hsr ,'==', time.strftime("%M"))
         if settings.hsr != time.strftime("%M"):
             pool_size = 1
             pool = ThreadPool(pool_size)
