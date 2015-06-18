@@ -94,7 +94,7 @@ class APIServer(object):
         returnDict = {'postdata' : request.json, 'returndata' : []}
 
         for pageviewsPerWeek in selectedPageviewsPerWeek:
-            tempDict = {'weeknumber' : pageviewsPerWeek[0],
+            tempDict = {'weekname' : pageviewsPerWeek[0],
                     'pageviews' : pageviewsPerWeek[1]}
 
             returnDict['returndata'].append(tempDict)
