@@ -45,7 +45,7 @@ def Collector():
         time.sleep(5)
 
 def Consumer(x):
-    pal.processAccesLog() 
+    #pal.processAccesLog() 
     #cc.processDailypageviews()
     #cc.processDailypageviewsPerCountry()
     #cc.processWeeklypageviews()
