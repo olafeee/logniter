@@ -11,7 +11,8 @@ class cacheCruncher(object):
 
 	def __init__(self):
 		Session = sessionmaker(bind=engine)
-		self.sess = Session()		
+		self.sess = Session()
+		self.dbtools = DBTools()	
 
 	def processDailypageviews(self):
 
@@ -23,11 +24,10 @@ class cacheCruncher(object):
 			enddate = dailypageviewcount[0].replace(hour=23, minute=59, second=59, microsecond=999)
 			pageviews = dailypageviewcount[1]
 			
-			dailypageview = Dailypageviews(startdate=startdate,
+			self.dbtools.get_or_create(self.sess, Dailypageviews,
+				startdate=startdate,
 				enddate=enddate,
 				pageviews=pageviews)
-
-			self.sess.add(dailypageview)
 
 		self.sess.commit()
 
@@ -40,13 +40,12 @@ class cacheCruncher(object):
 			enddate = dailypageviewsforcountry[0].replace(hour=23, minute=59, second=59, microsecond=999)
 			countrycode = dailypageviewsforcountry[1]
 			pageviews = dailypageviewsforcountry[2]
-			
-			dailypageviewspercountry_orm = DailypageviewsPerCountry(startdate=startdate,
-			enddate=enddate,
-			countrycode=countrycode,
-			pageviews=pageviews)
-			
-			self.sess.add(dailypageviewspercountry_orm)
+
+			self.dbtools.get_or_create(self.sess, DailypageviewsPerCountry,
+				startdate=startdate,
+				enddate=enddate,
+				countrycode=countrycode,
+				pageviews=pageviews)
 		
 		self.sess.commit()
 
@@ -60,12 +59,11 @@ class cacheCruncher(object):
 			enddateday = monthrange(monthlypageviewcount[0].year, monthlypageviewcount[0].month)[1]
 			enddate = monthlypageviewcount[0].replace(day=enddateday, hour=23, minute=59, second=59, microsecond=999)
 			pageviews = monthlypageviewcount[1]
-			
-			monthlypageview = Monthlypageviews(startdate=startdate,
+
+			self.dbtools.get_or_create(self.sess, Monthlypageviews,
+				startdate=startdate,
 				enddate=enddate,
 				pageviews=pageviews)
-
-			self.sess.add(monthlypageview)
 
 		self.sess.commit()
 
@@ -80,12 +78,11 @@ class cacheCruncher(object):
 			countrycode = monthlypageviewsforcountry[1]
 			pageviews = monthlypageviewsforcountry[2]
 
-			monthlypageviewspercountry_orm = MonthlypageviewsPerCountry(startdate=startdate,
+			self.dbtools.get_or_create(self.sess, MonthlypageviewsPerCountry,
+				startdate=startdate,
 				enddate=enddate,
 				countrycode=countrycode,
 				pageviews=pageviews)
-
-			self.sess.add(monthlypageviewspercountry_orm)
 
 		self.sess.commit()
 
@@ -100,11 +97,10 @@ class cacheCruncher(object):
 			enddate = (startdate + timedelta(days = 6)).replace(hour=23, minute=59, second=59, microsecond=999)
 			pageviews = weeklypageviewscount[1]
 
-			weeklypageview = Weeklypageviews(startdate=startdate,
+			self.dbtools.get_or_create(self.sess, Weeklypageviews,
+				startdate=startdate,
 				enddate=enddate,
 				pageviews=pageviews)
-
-			self.sess.add(weeklypageview)
 
 		self.sess.commit()
 
@@ -120,12 +116,11 @@ class cacheCruncher(object):
 			countrycode = weeklypageviewsforcountry[1]
 			pageviews = weeklypageviewsforcountry[2]
 
-			weeklypageviewspercountry_orm = WeeklypageviewsPerCountry(startdate=startdate,
+			self.dbtools.get_or_create(self.sess, WeeklypageviewsPerCountry,
+				startdate=startdate,
 				enddate=enddate,
 				countrycode=countrycode,
 				pageviews=pageviews)
-
-			self.sess.add(weeklypageviewspercountry_orm)
 
 		self.sess.commit()
 

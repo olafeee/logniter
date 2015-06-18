@@ -3,6 +3,7 @@ from sqlalchemy import create_engine, Column, String, Integer, DateTime, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.dialects.mysql import LONGTEXT, TINYTEXT
 from sqlalchemy.orm import relationship, backref
+from sqlalchemy.sql.expression import ClauseElement
 
 config = configparser.ConfigParser()
 config.read('logniter.config')
@@ -24,12 +25,12 @@ Base = declarative_base()
 
 class DBTools(object):
 
-	def get_or_create(session, model, defaults=None, **kwargs):
+	def get_or_create(self, session, model, defaults=None, **kwargs):
 	    instance = session.query(model).filter_by(**kwargs).first()
 	    if instance:
 	        return instance, False
 	    else:
-	        params = dict((k, v) for k, v in kwargs.iteritems() if not isinstance(v, ClauseElement))
+	        params = dict((k, v) for k, v in kwargs.items() if not isinstance(v, ClauseElement))
 	        params.update(defaults or {})
 	        instance = model(**params)
 	        session.add(instance)
