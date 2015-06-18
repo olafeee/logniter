@@ -34,14 +34,14 @@ class logHandler(object):
             self.log = open(config['olafelzinga.com']['Path'],'r')
         # When created as an object from another module
         else:
-            print('else started')
+            print(settings.config['olafelzinga.com']['Path'])
             self.settings = settings
             self.log = open(settings.config['olafelzinga.com']['Path'],'r')
 
     # processAccesLog
     def processAccesLog(self):
 
-        print('collect start')
+        print(self.log)
         Session = sessionmaker(bind=engine)
         sess = Session()
 
