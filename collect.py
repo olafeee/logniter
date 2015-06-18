@@ -45,6 +45,7 @@ class logHandler(object):
         sess = Session()
 
         for line in self.log:
+             print('for in log')
             # 0:host || 1:l || 2:user || 3:time || 4:request || 5:status || 6:bytes || 7:referer || 8:user-agent|| 9:contenttype
             array = (line.split('||'))
             
