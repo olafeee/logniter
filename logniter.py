@@ -50,7 +50,8 @@ def Collector():
 def apiThread():
     apiserver = APIServer()
     while settings.run is True:
-        
+        print('s')
+        time.sleep(5)
 
 def Consumer(x):
     print('consumer starttttt')
