@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 import pymysql
 from accesslogschema import engine, Dailypageviews, Monthlypageviews, Weeklypageviews, WeeklypageviewsPerCountry, Request, DailypageviewsPerCountry, MonthlypageviewsPerCountry, Yearlypageviews, DBTools
 from sqlalchemy.orm.session import sessionmaker
