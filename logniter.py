@@ -30,6 +30,7 @@ def signal_handler(signal, frame):
     sys.exit(0)
 
 def Collector():
+    print('thread collector start')
     while settings.run is True:
         print('123 backbar')
         print(settings.hsr +'=='+ time.strftime("%M"))
