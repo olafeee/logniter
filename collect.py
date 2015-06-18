@@ -34,6 +34,7 @@ class logHandler(object):
             self.log = open(config['olafelzinga.com']['Path'],'r')
         # When created as an object from another module
         else:
+            print('else started')
             self.settings = settings
             self.log = open(settings.config['olafelzinga.com']['Path'],'r')
 
