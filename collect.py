@@ -121,8 +121,8 @@ class logHandler(object):
             else:
                 pageview = False
 
-            self.dbtools.get_or_create(
-                )
+            # self.dbtools.get_or_create(
+            #     )
 
             request = Request(host=host,
                 datetime=datetime,
@@ -170,8 +170,7 @@ class logHandler(object):
         except ValueError:
             raise ValueError('Not a valid IP')
 
-'''
 if __name__ == '__main__':
     print('hahah main is loaded')
     lh = logHandler()
-    lh.processAccesLog()'''
+    lh.processAccesLog()
