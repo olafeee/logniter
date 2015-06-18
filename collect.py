@@ -99,9 +99,9 @@ class logHandler(object):
             try:
                 country = self.getCountry(host)
                 countryName = country[0]
-                countryCode = country[1]
+#               countryCode = country[1]
                 #Choose a random country code for debugging purposes
-                # countryCode = random.choice(debugcountrycodelist)
+                countryCode = random.choice(debugcountrycodelist)
                 
             except ValueError:  
                 countryName = ''
@@ -121,8 +121,10 @@ class logHandler(object):
             else:
                 pageview = False
 
-            self.dbtools.get_or_create(sess, Request,
-                host=host,
+            # self.dbtools.get_or_create(
+            #     )
+
+            request = Request(host=host,
                 datetime=datetime,
                 request=request, 
                 statuscode=statuscode, 
@@ -137,6 +139,8 @@ class logHandler(object):
                 contenttype=contenttype,
                 isPageview=pageview
                 )
+
+            sess.add(request)
         
         sess.commit()
 
@@ -167,5 +171,6 @@ class logHandler(object):
             raise ValueError('Not a valid IP')
 
 if __name__ == '__main__':
+    print('hahah main is loaded')
     lh = logHandler()
     lh.processAccesLog()
