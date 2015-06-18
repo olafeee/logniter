@@ -48,8 +48,7 @@ def Collector():
 def apiThread():
     apiserver = APIServer()
     while settings.run is True:
-        print('s')
-        time.sleep(5)
+        apiserver.startServer()
 
 def Consumer(x):
     pal.processAccesLog() 
