@@ -45,11 +45,6 @@ def Collector():
         call(["touch", "/etc/logniter/exit.txt"])
         time.sleep(5)
 
-def apiThread():
-    apiserver = APIServer()
-    while settings.run is True:
-        apiserver.startServer()
-
 def Consumer(x):
     pal.processAccesLog() 
     cc.processDailypageviews()
@@ -66,14 +61,12 @@ if __name__ == "__main__":
     #no
     pal = logHandler(settings)
     cc = cacheCruncher()
-
+    apiserver = APIServer()
     
     #start thread
     collector = threading.Thread(target=Collector, args=())
     collector.start()
-
-    apiserverthread = threading.Thread(target=Collector, args=())
-    apiserverthread.start()
+    apiserver.startServer()
     #signal
     signal.signal(signal.SIGTERM, signal_handler)
     signal.pause()
