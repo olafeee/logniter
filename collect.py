@@ -40,6 +40,7 @@ class logHandler(object):
     # processAccesLog
     def processAccesLog(self):
 
+        print('collect start')
         Session = sessionmaker(bind=engine)
         sess = Session()
 

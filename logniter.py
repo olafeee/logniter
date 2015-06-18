@@ -47,10 +47,10 @@ def Consumer(x):
     pal.processAccesLog() 
     cc.processDailypageviews()
     cc.processDailypageviewsPerCountry()
-    cc.processMonthlypageviews()
-    cc.processMonthlypageviewsPerCountry()
     cc.processWeeklypageviews()
     cc.processWeeklypageviewsPerCountry()
+    cc.processMonthlypageviews()
+    cc.processMonthlypageviewsPerCountry()
     call(["touch", "/etc/logniter/test12312312polzei.txt"])
 
 if __name__ == "__main__":
