@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import pymysql
-from accesslogschema import engine, Dailypageviews, Monthlypageviews, Weeklypageviews, WeeklypageviewsPerCountry, Request, DailypageviewsPerCountry, MonthlypageviewsPerCountry, DBTools
+from accesslogschema import engine, Dailypageviews, Monthlypageviews, Weeklypageviews, WeeklypageviewsPerCountry, Request, DailypageviewsPerCountry, MonthlypageviewsPerCountry, Yearlypageviews, DBTools
 from sqlalchemy.orm.session import sessionmaker
 from sqlalchemy.sql.expression import func
 from calendar import monthrange
@@ -124,6 +124,24 @@ class cacheCruncher(object):
 
 		self.sess.commit()
 
+	def processYearlypageviews(self):
+		yearlypageviews = self.sess.query(Request.datetime, func.count(Request.datetime)).filter_by(isPageview=True).order_by(Request.datetime).group_by(func.year(Request.datetime))
+
+		for yearlypageviewscount in yearlypageviews:
+
+			fetchedDate = yearlypageviewscount[0]
+
+			startdate = fetchedDate.replace(month=1, day=1, hour=0, minute=0, second=0, microsecond=0)
+			enddate = fetchedDate.replace(month=12, day=31, hour=23, minute=59, second=59, microsecond=999)
+			pageviews = yearlypageviewscount[1]
+
+			self.dbtools.get_or_create(self.sess, Yearlypageviews,
+				startdate=startdate,
+				enddate=enddate,
+				pageviews=pageviews)
+
+		self.sess.commit()
+
 if __name__ == '__main__':
 	cc = cacheCruncher()
 	cc.processDailypageviews()
@@ -132,3 +150,4 @@ if __name__ == '__main__':
 	cc.processMonthlypageviewsPerCountry()
 	cc.processWeeklypageviews()
 	cc.processWeeklypageviewsPerCountry()
+	cc.processYearlypageviews()
