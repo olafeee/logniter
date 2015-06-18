@@ -1,7 +1,7 @@
 import bottle
 from bottle import Bottle, run, request
 from bottle.ext.sqlalchemy import SQLAlchemyPlugin
-from accesslogschema import engine, Base, Dailypageviews, DailypageviewsPerCountry, Monthlypageviews, MonthlypageviewsPerCountry, Weeklypageviews, Yearlypageviews, Request
+from accesslogschema import engine, Base, Dailypageviews, DailypageviewsPerCountry, Monthlypageviews, Weeklypageviews, Request
 from sqlalchemy.orm.session import sessionmaker
 from sqlalchemy.sql.expression import and_, func, between
 from datetime import datetime
@@ -13,7 +13,7 @@ class APIServer(object):
 
     def startServer(self):
         self.app.install(SQLAlchemyPlugin(engine, Base.metadata, create=True))
-        run(self.app, host='localhost', port=8080, debug=False, quiet=True, reloader=True)
+        run(self.app, host='localhost', port=8080, debug=False, reloader=True)
 
 
     def closeServer(self):
@@ -64,26 +64,6 @@ class APIServer(object):
 
         return returnDict
 
-    @app.post('/pageviewspermonthpercountry')
-    def pageviewspermonthpercountry(db):
-
-        year = request.json['year']
-
-        selectedPageviewsPerMonthPerCountry = db.query(func.month(MonthlypageviewsPerCountry.startdate), MonthlypageviewsPerCountry.countrycode, MonthlypageviewsPerCountry.pageviews).group_by(MonthlypageviewsPerCountry.countrycode, func.month(MonthlypageviewsPerCountry.startdate))
-
-        returnDict = {'postdata' : request.json, 'returndata' : []}
-
-        for pageviewsPerMonthPerCountry in selectedPageviewsPerMonthPerCountry:
-
-            tempDict = {'monthnumber' : pageviewsPerMonthPerCountry[0],
-                    'montname' : month_name[pageviewsPerMonthPerCountry[0]],
-                    'pageviews' : pageviewsPerMonthPerCountry[2],
-                    'countrycode' : pageviewsPerMonthPerCountry[1]}
-
-            returnDict['returndata'].append(tempDict)
-
-        return returnDict
-
     @app.post('/pageviewsperweek')
     def pageviewsperweek(db):
 
@@ -94,24 +74,11 @@ class APIServer(object):
         returnDict = {'postdata' : request.json, 'returndata' : []}
 
         for pageviewsPerWeek in selectedPageviewsPerWeek:
-            tempDict = {'weekname' : pageviewsPerWeek[0],
+            tempDict = {'weeknumber' : pageviewsPerWeek[0],
                     'pageviews' : pageviewsPerWeek[1]}
 
             returnDict['returndata'].append(tempDict)
-
-        return returnDict
-
-    @app.post('/pageviewsperyear')
-    def pageviewsperyear(db):
-
-        selectedPageviewsPerYear = db.query(func.year(Yearlypageviews.startdate), Yearlypageviews.pageviews)
-        returnDict = {'postdata' : request.json, 'returndata' : []}
-
-        for pageviewsPerYear in selectedPageviewsPerYear:
-            tempDict = { 'year' : pageviewsPerYear[0],
-                    'pageviews' : pageviewsPerYear[1]}
-
-            returnDict['returndata'].append(tempDict)
+            print(returnDict)
 
         return returnDict
 
@@ -145,5 +112,5 @@ class APIServer(object):
 
 if __name__ == "__main__":
     apiserver = APIServer()
-    apiserver.startServer()
+
     
