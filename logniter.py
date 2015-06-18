@@ -48,8 +48,9 @@ def Collector():
         time.sleep(5)
 
 def apiThread():
+    apiserver = APIServer()
     while settings.run is True:
-        apiserver = APIServer()
+        
 
 def Consumer(x):
     print('consumer starttttt')
@@ -69,6 +70,7 @@ if __name__ == "__main__":
     call(["touch", "/etc/logniter/voordat henkie klapt.txt"])
     pal = logHandler(settings)
     cc = cacheCruncher()
+
     
     #start thread
     collector = threading.Thread(target=Collector, args=())
