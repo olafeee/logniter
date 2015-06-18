@@ -13,7 +13,7 @@ class APIServer(object):
 
     def startServer(self):
         self.app.install(SQLAlchemyPlugin(engine, Base.metadata, create=True))
-        run(self.app, host='localhost', port=8080, debug=True, reloader=True)
+        run(self.app, host='localhost', port=8080, debug=False, quiet=True, reloader=True)
 
 
     def closeServer(self):
