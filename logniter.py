@@ -25,6 +25,7 @@ def signal_handler(signal, frame):
     except:
         x = 1
     apiserver.closeServer()
+    apiserverthread.join()
     collector.join()
     call(["touch", "/etc/logniter/exit.txt"])
     sys.exit(0)
@@ -46,6 +47,10 @@ def Collector():
         call(["touch", "/etc/logniter/exit.txt"])
         time.sleep(5)
 
+def apiThread():
+    while settings.run is True:
+        apiserver = APIServer()
+
 def Consumer(x):
     print('consumer starttttt')
     pal.processAccesLog() 
@@ -64,10 +69,13 @@ if __name__ == "__main__":
     call(["touch", "/etc/logniter/voordat henkie klapt.txt"])
     pal = logHandler(settings)
     cc = cacheCruncher()
-    apiserver = APIServer()
+    
     #start thread
     collector = threading.Thread(target=Collector, args=())
     collector.start()
+
+    apiserverthread = threading.Thread(target=Collector, args=())
+    apiserverthread.start()
     #signal
     signal.signal(signal.SIGTERM, signal_handler)
     signal.pause()
