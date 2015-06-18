@@ -31,9 +31,7 @@ def signal_handler(signal, frame):
     sys.exit(0)
 
 def Collector():
-    print('thread collector start')
     while settings.run is True:
-        print('123 backbar')
         print(settings.hsr ,'==', time.strftime("%M"))
         if settings.hsr != time.strftime("%M"):
             pool_size = 1
@@ -54,7 +52,6 @@ def apiThread():
         time.sleep(5)
 
 def Consumer(x):
-    print('consumer starttttt')
     pal.processAccesLog() 
     cc.processDailypageviews()
     cc.processDailypageviewsPerCountry()
@@ -68,7 +65,6 @@ if __name__ == "__main__":
     #load classes
     settings = settings() 
     #no
-    call(["touch", "/etc/logniter/voordat henkie klapt.txt"])
     pal = logHandler(settings)
     cc = cacheCruncher()
 
