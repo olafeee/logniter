@@ -14,7 +14,7 @@ class APIServer(object):
     def __init__(self):
         #print('api app started')
         self.app.install(SQLAlchemyPlugin(engine, Base.metadata, create=True))
-        run(self.app, host='localhost', port=8080, debug=False, reloader=True)
+        run(self.app, host='localhost', port=8080, debug=True, reloader=True)
 
     def closeServer(self):
         #print('app close')
