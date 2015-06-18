@@ -34,19 +34,16 @@ class logHandler(object):
             self.log = open(config['olafelzinga.com']['Path'],'r')
         # When created as an object from another module
         else:
-            print(settings.config['olafelzinga.com']['Path'])
             self.settings = settings
             self.log = open(settings.config['olafelzinga.com']['Path'],'r')
 
     # processAccesLog
     def processAccesLog(self):
 
-        print(self.log)
         Session = sessionmaker(bind=engine)
         sess = Session()
 
         for line in self.log:
-            print('for in log')
             # 0:host || 1:l || 2:user || 3:time || 4:request || 5:status || 6:bytes || 7:referer || 8:user-agent|| 9:contenttype
             array = (line.split('||'))
             
