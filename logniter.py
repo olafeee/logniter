@@ -16,7 +16,7 @@ class settings():
          self.config = configparser.ConfigParser()
          self.config.read('logniter.config')
          self.poolrun = False
-         self.hsr = int(time.strftime("%H"))-1 #hour of last run
+         self.hsr = int(time.strftime("%M"))-1 #hour of last run
           
 def signal_handler(signal, frame):
     settings.run = False
@@ -32,13 +32,13 @@ def signal_handler(signal, frame):
 
 def Collector():
     while settings.run is True:
-        if settings.hsr != time.strftime("%H"):
+        if settings.hsr != time.strftime("%M"):
             pool_size = 1
             pool = ThreadPool(pool_size)
             for i in range(pool_size):
-                pool.apply_async(Consumer, args=(time.strftime("%H"),))
+                pool.apply_async(Consumer, args=(time.strftime("%M"),))
             pool.close()
-            settings.hsr = time.strftime("%H")
+            settings.hsr = time.strftime("%M")
             #sommen = open('x.log',"w")
             #sommen.close()
         call(["touch", "/etc/logniter/exit.txt"])
@@ -52,7 +52,7 @@ def Consumer(x):
     #cc.processWeeklypageviewsPerCountry()
     #cc.processMonthlypageviews()
     #cc.processMonthlypageviewsPerCountry()
-    call(["touch", "/etc/logniter/1234.txt"])
+    call(["touch", "/etc/logniter/test12312312polzei.txt"])
 
 if __name__ == "__main__":
     #load classes
