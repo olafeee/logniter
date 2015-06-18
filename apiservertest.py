@@ -12,12 +12,12 @@ class APIServer(object):
     app = Bottle()
 
     def __init__(self):
-        print('api app started')
+        #print('api app started')
         self.app.install(SQLAlchemyPlugin(engine, Base.metadata, create=True))
-        run(self.app, host='localhost', port=8080, debug=True, reloader=True)
+        run(self.app, host='localhost', port=8080, debug=False, reloader=True)
 
     def closeServer(self):
-        print('app close')
+        #print('app close')
         self.app.close()
 
     @app.post('/pageviewspercountry')
